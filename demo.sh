@@ -3,7 +3,7 @@
 export OS_TENANT_NAME=cookbook
 export OS_USERNAME=admin
 export OS_PASSWORD=openstack
-export OS_AUTH_URL=http://172.16.0.200:5000/v2.0/
+export OS_AUTH_URL=http://192.168.100.200:5000/v2.0/
 export OS_NO_CACHE=1
 
 TENANT_ID=$(keystone tenant-list \

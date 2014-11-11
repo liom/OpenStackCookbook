@@ -13,7 +13,7 @@ chown -R apt-cacher-ng:apt-cacher-ng /var/cache/apt-cacher-ng
 sudo apt-get update
 sudo apt-get install iftop iptraf vim curl wget lighttpd -y
 
-echo 'Acquire::http { Proxy "http://172.16.0.110:3142"; };' | sudo tee /etc/apt/apt.conf.d/01apt-cacher-ng-proxy
+echo 'Acquire::http { Proxy "http://192.168.100.110:3142"; };' | sudo tee /etc/apt/apt.conf.d/01apt-cacher-ng-proxy
 
 CIRROS="cirros-0.3.0-x86_64-disk.img"
 UBUNTU="precise-server-cloudimg-amd64-disk1.img"

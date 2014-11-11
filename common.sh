@@ -15,7 +15,6 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-#export CONTROLLER_HOST=172.16.0.200
 #Dynamically determine first three octets if user specifies alternative IP ranges.  Fourth octet still hardcoded
 export CONTROLLER_HOST=$(ifconfig eth1 | awk '/inet addr/ {split ($2,A,":"); print A[2]}' | sed 's/\.[0-9]*$/.200/')
 export GLANCE_HOST=${CONTROLLER_HOST}
@@ -38,9 +37,9 @@ then
 	# Add host entries
 	echo "
 # CookbookHosts
-172.16.0.200	controller.book controller
-172.16.0.201	compute.book compute
-172.16.0.202	network.book network
-172.16.0.210	swift.book swift
-172.16.0.211	cinder.book cinder" | sudo tee -a /etc/hosts
+192.168.100.200	controller.book controller
+192.168.100.201	compute.book compute
+192.168.100.202	network.book network
+192.168.100.210	swift.book swift
+192.168.100.211	cinder.book cinder" | sudo tee -a /etc/hosts
 fi

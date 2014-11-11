@@ -306,7 +306,7 @@ sudo cp /vagrant/remakerings.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/remakerings.sh
 sudo /usr/local/bin/remakerings.sh
 
-export ENDPOINT=172.16.0.200
+export ENDPOINT=192.168.100.200
 export SERVICE_TOKEN=ADMIN
 export SERVICE_ENDPOINT=http://${ENDPOINT}:35357/v2.0
 

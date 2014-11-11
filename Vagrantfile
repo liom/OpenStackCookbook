@@ -52,14 +52,16 @@ Vagrant.configure("2") do |config|
 
     nodes.each do |prefix, (count, ip_start)|
         count.times do |i|
-            #hostname = "%s-%02d" % [prefix, (i+1)]
             hostname = "%s" % [prefix, (i+1)]
 
             config.vm.define "#{hostname}" do |box|
                 box.vm.hostname = "#{hostname}.book"
-                box.vm.network :private_network, ip: "172.16.0.#{ip_start+i}", :netmask => "255.255.0.0"
-                box.vm.network :private_network, ip: "172.10.0.#{ip_start+i}", :netmask => "255.255.0.0" 
-            		box.vm.network :private_network, ip: "192.168.100.#{ip_start+i}", :netmask => "255.255.255.0" 
+  		# eth1 = inter OpenStack Management
+                box.vm.network :private_network, ip: "10.0.0.#{ip_start+i}", :netmask => "255.255.255.0"
+		# eth2 = tunnel network
+                box.vm.network :private_network, ip: "10.0.1.#{ip_start+i}", :netmask => "255.255.255.0" 
+		# eth3 = public network (API + External Floating)
+            	box.vm.network :private_network, ip: "192.168.100.#{ip_start+i}", :netmask => "255.255.255.0" 
 
                 box.vm.provision :shell, :path => "#{prefix}.sh"
 

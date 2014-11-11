@@ -415,7 +415,7 @@ cat > $HEAT_CONF <<EOF
 # Options defined in heat.openstack.common.rpc.impl_kombu
 #
 
-rabbit_host=172.16.0.200
+rabbit_host=192.168.100.200
 rabbit_port=5672
 rabbit_userid=guest
 rabbit_password=guest
