@@ -332,6 +332,8 @@ export OS_NO_CACHE=1
 CIRROS="cirros-0.3.0-x86_64-disk.img"
 UBUNTU="trusty-server-cloudimg-amd64-disk1.img"
 
+echo "Downloading images from the internet. Please be patient."
+
 if [[ ! -f /vagrant/${CIRROS} ]]
 then
         # Download then store on local host for next time
@@ -343,6 +345,8 @@ then
         # Download then store on local host for next time
 	wget --quiet http://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img -O /vagrant/${UBUNTU}
 fi
+
+echo "Uploading images to Glance."
 
 glance image-create --name='trusty-image' --disk-format=qcow2 --container-format=bare --public < /vagrant/${UBUNTU}
 glance image-create --name='cirros-image' --disk-format=qcow2 --container-format=bare --public < /vagrant/${CIRROS}

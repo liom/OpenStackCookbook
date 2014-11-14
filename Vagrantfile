@@ -78,12 +78,12 @@ Vagrant.configure("2") do |config|
                   # Defaults
                   vbox.customize ["modifyvm", :id, "--memory", 1024]
                   vbox.customize ["modifyvm", :id, "--cpus", 1]
-	                if prefix == "compute" or prefix == "controller" or prefix == "swift"
+	          if prefix == "compute" or prefix == "controller" or prefix == "swift"
                   	vbox.customize ["modifyvm", :id, "--memory", 2048]
-                    vbox.customize ["modifyvm", :id, "--cpus", 2]
-              			vbox.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
-              			vbox.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
-                  end
+                        vbox.customize ["modifyvm", :id, "--cpus", 2]
+		  end
+              	  vbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+              	  vbox.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
                 end
             end
         end
