@@ -183,6 +183,15 @@ service neutron-plugin-openvswitch-agent restart
 NOVA_CONF=/etc/nova/nova.conf
 NOVA_API_PASTE=/etc/nova/api-paste.ini
 
+# Qemu or KVM (VT-x/AMD-v)
+KVM=$(egrep '(vmx|svm)' /proc/cpuinfo)
+if [[ ${KVM} ]]
+then
+	LIBVIRT=kvm
+else
+	LIBVIRT=qemu
+fi
+
 cat > ${NOVA_CONF} <<EOF
 [DEFAULT]
 dhcpbridge_flagfile=/etc/nova/nova.conf
@@ -202,7 +211,8 @@ enabled_apis=ec2,osapi_compute,metadata
 # Libvirt and Virtualization
 libvirt_use_virtio_for_bridges=True
 connection_type=libvirt
-libvirt_type=qemu
+libvirt_type=${LIBVIRT}
+libvirt_cpu_mode=host-model
 
 # Database
 sql_connection=mysql://nova:openstack@${MYSQL_HOST}/nova

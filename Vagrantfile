@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
     # VMware Fusion / Workstation
-    config.vm.provider "vmware_fusion" do |vmware, override|
+    config.vm.provider "vmware_fusion" or config.vm.provider "vmware_workstation" do |vmware, override|
       override.vm.box = "bunchc/utopic-x64"
       override.vm.synced_folder ".", "/vagrant", type: "nfs"
 
@@ -33,6 +33,7 @@ Vagrant.configure("2") do |config|
       vmware.vmx["unity.showBadges"] = "FALSE"
       vmware.vmx["unity.showBorders"] = "FALSE"
       vmware.vmx["unity.wasCapable"] = "FALSE"
+      vmware.vmx["vhv.enable"] = "TRUE"
     end
 
 
@@ -69,7 +70,17 @@ Vagrant.configure("2") do |config|
                 box.vm.provider :vmware_fusion do |v|
                   v.vmx["memsize"] = 1024
                   if prefix == "compute" or prefix == "controller" or prefix == "swift"
-	              	  v.vmx["memsize"] = 2048
+	              	  v.vmx["memsize"] = 3172
+			  v.vmx["numvcpus"] = "2"
+                  end
+                end
+
+                # If using Workstation
+                box.vm.provider :vmware_workstation do |v|
+                  v.vmx["memsize"] = 1024
+                  if prefix == "compute" or prefix == "controller" or prefix == "swift"
+	              	  v.vmx["memsize"] = 3172
+			  v.vmx["numvcpus"] = "2"
                   end
                 end
 
@@ -79,10 +90,10 @@ Vagrant.configure("2") do |config|
                   vbox.customize ["modifyvm", :id, "--memory", 1024]
                   vbox.customize ["modifyvm", :id, "--cpus", 1]
 	          if prefix == "compute" or prefix == "controller" or prefix == "swift"
-                  	vbox.customize ["modifyvm", :id, "--memory", 2048]
+                  	vbox.customize ["modifyvm", :id, "--memory", 3172]
                         vbox.customize ["modifyvm", :id, "--cpus", 2]
 		  end
-              	  vbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+              	  vbox.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
               	  vbox.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
                 end
             end
