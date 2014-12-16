@@ -5,7 +5,7 @@
 # Authors: Cody Bunch (bunchc@gmail.com)
 #          Kevin Jackson (kevin@linuxservices.co.uk)
 
-# Updated for Icehouse
+# Updated for Juno
 
 # Source in common env vars
 . /vagrant/common.sh
@@ -53,16 +53,14 @@ backend=sqlalchemy
 connection = mysql://cinder:${MYSQL_CINDER_PASS}@${CONTROLLER_HOST}/cinder
 
 [keystone_authtoken]
-service_protocol = http
-service_host = ${CONTROLLER_HOST}
-service_port = 5000
 auth_host = ${CONTROLLER_HOST}
 auth_port = 35357
-auth_protocol = http
-auth_uri = http://${CONTROLLER_HOST}:5000/
+auth_protocol = https
+auth_uri = https://${CONTROLLER_HOST}:5000/
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${CINDER_SERVICE_USER}
 admin_password = ${CINDER_SERVICE_PASS}
+insecure = True
 
 EOF
 

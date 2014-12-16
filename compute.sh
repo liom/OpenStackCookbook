@@ -126,6 +126,7 @@ dvr_base_mac = fa:16:3f:01:00:00
 
 # auth
 auth_strategy = keystone
+nova_api_insecure = True
 
 # RPC configuration options. Defined in rpc __init__
 # The messaging module to use, defaults to kombu.
@@ -147,11 +148,12 @@ root_helper = sudo
 [keystone_authtoken]
 auth_host = ${CONTROLLER_HOST}
 auth_port = 35357
-auth_protocol = http
+auth_protocol = https
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
 signing_dir = \$state_path/keystone-signing
+insecure = True
 
 [database]
 connection = mysql://neutron:${MYSQL_NEUTRON_PASS}@${CONTROLLER_HOST}/neutron
@@ -213,6 +215,19 @@ EOF
 echo "
 Defaults !requiretty
 neutron ALL=(ALL:ALL) NOPASSWD:ALL" | tee -a /etc/sudoers
+
+# Metadata
+echo "
+[DEFAULT]
+auth_url = https://${CONTROLLER_HOST}:5000/v2.0
+auth_region = regionOne
+admin_tenant_name = service
+admin_user = neutron
+admin_password = neutron
+nova_metadata_ip = ${CONTROLLER_HOST}
+insecure = True
+metadata_proxy_shared_secret = foo" | sudo tee -a ${NEUTRON_METADATA_AGENT_INI}
+
 
 # Restart Neutron Services
 service neutron-plugin-openvswitch-agent restart
@@ -317,16 +332,11 @@ vncserver_proxyclient_address=${MY_IP}
 vncserver_listen=0.0.0.0
 
 [keystone_authtoken]
-service_protocol = http
-service_host = ${CONTROLLER_HOST}
-service_port = 5000
-auth_host = ${CONTROLLER_HOST}
-auth_port = 35357
-auth_protocol = http
-auth_uri = https://${CONTROLLER_HOST}:5000/
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NOVA_SERVICE_USER}
 admin_password = ${NOVA_SERVICE_PASS}
+identity_uri = https://${KEYSTONE_ENDPOINT}:35357/
+insecure = True
 
 
 EOF

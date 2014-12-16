@@ -114,11 +114,12 @@ root_helper = sudo
 [keystone_authtoken]
 auth_host = ${CONTROLLER_HOST}
 auth_port = 35357
-auth_protocol = http
+auth_protocol = https
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
 signing_dir = \$state_path/keystone-signing
+insecure = True
 
 [database]
 connection = mysql://neutron:${MYSQL_NEUTRON_PASS}@${CONTROLLER_HOST}/neutron
@@ -160,6 +161,7 @@ admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
 nova_metadata_ip = ${CONTROLLER_HOST}
 metadata_proxy_shared_secret = foo
+insecure = True
 EOF
 
 cat > ${NEUTRON_PLUGIN_ML2_CONF_INI} << EOF

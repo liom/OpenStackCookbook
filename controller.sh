@@ -210,7 +210,7 @@ use_dumb_member = True
 role_tree_dn = ou=Roles,dc=cook,dc=book
 role_objectclass = organizationalRole
 role_id_attribute = cn
-role_member_attribute = roleOccupant" | tee -a ${KEYSTONE_CONF}
+role_member_attribute = roleOccupant" | sudo tee -a ${KEYSTONE_CONF}
 
 }
 
@@ -406,7 +406,7 @@ syslog_log_facility = LOG_LOCAL0
 [paste_deploy]
 config_file = /etc/glance/glance-api-paste.ini
 flavor = keystone
-" | tee -a ${GLANCE_API_CONF}
+" | sudo tee -a ${GLANCE_API_CONF}
 
 
 ## /etc/glance/glance-registry.conf
@@ -447,7 +447,7 @@ syslog_log_facility = LOG_LOCAL0
 [paste_deploy]
 config_file = /etc/glance/glance-registry-paste.ini
 flavor = keystone
-"
+" | sudo tee -a ${GLANCE_REGISTRY_CONF}
 
 sudo stop glance-registry
 sudo start glance-registry
@@ -636,7 +636,7 @@ EOF
 
 echo "
 Defaults !requiretty
-neutron ALL=(ALL:ALL) NOPASSWD:ALL" | tee -a /etc/sudoers
+neutron ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
 
 sudo neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno
@@ -846,6 +846,12 @@ sudo restart rsyslog
 
 # Create a .stackrc file
 cat > /vagrant/openrc <<EOF
+# Aliases for insecure SSL
+alias nova='nova --insecure'
+alias keystone='keystone --insecure'
+alias neutron='neutron --insecure'
+alias glance='glance --insecure'
+alias cinder='cinder --insecure'
 export OS_TENANT_NAME=cookbook
 export OS_USERNAME=admin
 export OS_PASSWORD=openstack
