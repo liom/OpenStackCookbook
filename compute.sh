@@ -40,9 +40,6 @@ ssh-keyscan controller >> ~/.ssh/known_hosts
 cat /vagrant/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
 cp /vagrant/id_rsa* ~/.ssh/
 
-sudo scp root@controller:/etc/ssl/certs/ca.pem /etc/ssl/certs/ca.pem
-sudo c_rehash /etc/ssl/certs/ca.pem
-
 nova_compute_install() {
 	# Install some packages:
 	sudo apt-get -y install ntp nova-api-metadata nova-compute nova-compute-qemu nova-doc novnc nova-novncproxy sasl2-bin
@@ -92,7 +89,7 @@ sudo apt-get install -y openvswitch-switch
 
 # OpenVSwitch Configuration
 #br-int will be used for VM integration
-sudo ovs-vsctl add-br br-int
+#sudo ovs-vsctl add-br br-int
 
 # Neutron Tenant Tunnel Network
 sudo ovs-vsctl add-br br-eth2
@@ -169,8 +166,8 @@ notification_driver = neutron.openstack.common.notifier.rpc_notifier
 root_helper = sudo
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
@@ -247,8 +244,8 @@ neutron ALL=(ALL:ALL) NOPASSWD:ALL" | tee -a /etc/sudoers
 # Metadata
 cat > ${NEUTRON_METADATA_AGENT_INI} << EOF
 [DEFAULT]
-auth_url = https://${KEYSTONE_ENDPOINT}:5000/v2.0
-auth_region = regionOne
+auth_url = http://${KEYSTONE_ENDPOINT}:5000/v2.0
+auth_region = RegionOne
 admin_tenant_name = service
 admin_user = neutron
 admin_password = neutron
@@ -316,13 +313,12 @@ neutron_auth_strategy=keystone
 neutron_admin_tenant_name=service
 neutron_admin_username=neutron
 neutron_admin_password=neutron
-neutron_admin_auth_url=https://${KEYSTONE_ENDPOINT}:5000/v2.0
+neutron_admin_auth_url=http://${KEYSTONE_ENDPOINT}:5000/v2.0
 libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
 linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
 #firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
 security_group_api=neutron
 firewall_driver=nova.virt.firewall.NoopFirewallDriver
-neutron_ca_certificates_file=/etc/ssl/certs/ca.pem
 
 service_neutron_metadata_proxy=true
 neutron_metadata_proxy_shared_secret=foo
@@ -348,7 +344,7 @@ scheduler_default_filters=AllHostsFilter
 
 # Auth
 auth_strategy=keystone
-keystone_ec2_url=https://${KEYSTONE_ENDPOINT}:5000/v2.0/ec2tokens
+keystone_ec2_url=http://${KEYSTONE_ENDPOINT}:5000/v2.0/ec2tokens
 
 # NoVNC
 novnc_enabled=true
@@ -365,8 +361,8 @@ vncserver_proxyclient_address=${ETH3_IP}
 vncserver_listen=0.0.0.0
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NOVA_SERVICE_USER}
 admin_password = ${NOVA_SERVICE_PASS}

@@ -43,7 +43,7 @@ host = 172.16.0.200
 port = 8777
  
 [keystone_authtoken]
-identity_uri = https://192.168.100.200:35357
+identity_uri = http://192.168.100.200:35357
 admin_tenant_name = service
 admin_user = ceilometer
 admin_password = ceilometer
@@ -51,7 +51,7 @@ revocation_cache_time = 10
 insecure = True
 
 [service_credentials]
-os_auth_url = https://192.168.100.200:5000/v2.0
+os_auth_url = http://192.168.100.200:5000/v2.0
 os_username = ceilometer
 os_tenant_name = service
 os_password = ceilometer

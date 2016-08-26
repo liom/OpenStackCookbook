@@ -169,8 +169,8 @@ notification_driver = neutron.openstack.common.notifier.rpc_notifier
 root_helper = sudo
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
@@ -247,8 +247,8 @@ neutron ALL=(ALL:ALL) NOPASSWD:ALL" | tee -a /etc/sudoers
 # Metadata
 cat > ${NEUTRON_METADATA_AGENT_INI} << EOF
 [DEFAULT]
-auth_url = https://${KEYSTONE_ENDPOINT}:5000/v2.0
-auth_region = regionOne
+auth_url = http://${KEYSTONE_ENDPOINT}:5000/v2.0
+auth_region = RegionOne
 admin_tenant_name = service
 admin_user = neutron
 admin_password = neutron
@@ -316,7 +316,7 @@ neutron_auth_strategy=keystone
 neutron_admin_tenant_name=service
 neutron_admin_username=neutron
 neutron_admin_password=neutron
-neutron_admin_auth_url=https://${KEYSTONE_ENDPOINT}:5000/v2.0
+neutron_admin_auth_url=http://${KEYSTONE_ENDPOINT}:5000/v2.0
 libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
 linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
 #firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
@@ -348,7 +348,7 @@ scheduler_default_filters=AllHostsFilter
 
 # Auth
 auth_strategy=keystone
-keystone_ec2_url=https://${KEYSTONE_ENDPOINT}:5000/v2.0/ec2tokens
+keystone_ec2_url=http://${KEYSTONE_ENDPOINT}:5000/v2.0/ec2tokens
 
 # NoVNC
 novnc_enabled=true
@@ -365,8 +365,8 @@ vncserver_proxyclient_address=${ETH3_IP}
 vncserver_listen=0.0.0.0
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
 admin_tenant_name = ${SERVICE_TENANT}
 admin_user = ${NOVA_SERVICE_USER}
 admin_password = ${NOVA_SERVICE_PASS}

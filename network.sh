@@ -8,7 +8,7 @@
 
 # Vagrant scripts used by the OpenStack Cloud Computing Cookbook, 3rd Edition
 # Website: http://www.openstackcookbook.com/
-# Suitable for OpenStack Juno
+# Repo updated for Liberty
 
 # Source in common env vars
 . /vagrant/common.sh
@@ -36,8 +36,6 @@ sysctl -p
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install linux-headers-`uname -r`
-sudo scp root@controller:/etc/ssl/certs/ca.pem /etc/ssl/certs/ca.pem
-sudo c_rehash /etc/ssl/certs/ca.pem
 sudo apt-get -y install vlan bridge-utils dnsmasq-base dnsmasq-utils
 sudo apt-get -y install neutron-plugin-ml2 neutron-plugin-openvswitch-agent openvswitch-switch neutron-l3-agent neutron-dhcp-agent ipset python-mysqldb neutron-lbaas-agent haproxy
 
@@ -129,13 +127,12 @@ notification_driver = neutron.openstack.common.notifier.rpc_notifier
 root_helper = sudo
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
-admin_tenant_name = ${SERVICE_TENANT}
-admin_user = ${NEUTRON_SERVICE_USER}
-admin_password = ${NEUTRON_SERVICE_PASS}
-#signing_dir = \$state_path/keystone-signing
-insecure = True
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
+admin_tenant_name = service
+admin_user = neutron
+admin_password = neutron
+ 
 
 [database]
 connection = mysql://neutron:${MYSQL_NEUTRON_PASS}@${CONTROLLER_HOST}/neutron
@@ -171,14 +168,13 @@ EOF
 
 cat > ${NEUTRON_METADATA_AGENT_INI} << EOF
 [DEFAULT]
-auth_url = https://${KEYSTONE_ENDPOINT}:5000/v2.0
-auth_region = regionOne
+auth_url = http://${KEYSTONE_ENDPOINT}:5000/v2.0
+auth_region = RegionOne
 admin_tenant_name = service
 admin_user = ${NEUTRON_SERVICE_USER}
 admin_password = ${NEUTRON_SERVICE_PASS}
 nova_metadata_ip = ${CONTROLLER_HOST}
 metadata_proxy_shared_secret = foo
-auth_insecure = True
 EOF
 
 cat > ${NEUTRON_PLUGIN_ML2_CONF_INI} << EOF

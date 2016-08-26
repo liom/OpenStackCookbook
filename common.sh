@@ -37,13 +37,11 @@ export SERVICE_TENANT_NAME=service
 export SERVICE_PASS=openstack
 export ENDPOINT=${KEYSTONE_ADMIN_ENDPOINT}
 export SERVICE_TOKEN=ADMIN
-export SERVICE_ENDPOINT=https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
+export SERVICE_ENDPOINT=http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
 export MONGO_KEY=MongoFoo
-export OS_CACERT=/vagrant/ca.pem
-export OS_KEY=/vagrant/cakey.pem
 
 sudo apt-get install -y software-properties-common ubuntu-cloud-keyring
-sudo add-apt-repository -y cloud-archive:juno
+sudo add-apt-repository -y cloud-archive:liberty
 sudo apt-get update && sudo apt-get upgrade -y
 
 if [[ "$(egrep CookbookHosts /etc/hosts | awk '{print $2}')" -eq "" ]]

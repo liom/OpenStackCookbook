@@ -197,11 +197,11 @@ set log_name = cache
 
 [filter:authtoken]
 paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
-auth_protocol = https
+auth_protocol = http
 auth_host = $KEYSTONE_ENDPOINT
 auth_port = 35357
 auth_token = admin
-service_protocol = https
+service_protocol = http
 service_host = $KEYSTONE_ENDPOINT
 service_port = 5000
 admin_token = admin
@@ -325,7 +325,7 @@ sudo /usr/local/bin/remakerings.sh
 
 export ENDPOINT=192.168.100.200
 export SERVICE_TOKEN=ADMIN
-export SERVICE_ENDPOINT=https://${ENDPOINT}:35357/v2.0
+export SERVICE_ENDPOINT=http://${ENDPOINT}:35357/v2.0
 export OS_KEY=/vagrant/cakey.pem
 export OS_CACERT=/vagrant/ca.pem
 
@@ -343,7 +343,7 @@ PUBLIC_URL="http://$SWIFT_PROXY_SERVER:8080/v1/AUTH_\$(tenant_id)s"
 ADMIN_URL="http://$SWIFT_PROXY_SERVER:8080/v1/"
 INTERNAL_URL="http://$SWIFT_PROXY_SERVER:8080/v1/AUTH_\$(tenant_id)s"
 
-keystone endpoint-create --region regionOne --service_id $ID --publicurl $PUBLIC_URL --adminurl $ADMIN_URL --internalurl $INTERNAL_URL
+keystone endpoint-create --region RegionOne --service_id $ID --publicurl $PUBLIC_URL --adminurl $ADMIN_URL --internalurl $INTERNAL_URL
 
 # Get the service tenant ID
 SERVICE_TENANT_ID=$(keystone tenant-list | awk '/\ service\ / {print $2}')
@@ -365,7 +365,7 @@ sudo tee /root/swiftrc >/dev/null <<EOF
 export OS_USERNAME=swift
 export OS_PASSWORD=swift
 export OS_TENANT_NAME=service
-export OS_AUTH_URL=https://${ENDPOINT}:5000/v2.0/
+export OS_AUTH_URL=http://${ENDPOINT}:5000/v2.0/
 export OS_KEY=/vagrant/cakey.pem
 export OS_CACERT=/vagrant/ca.pem
 
@@ -374,7 +374,7 @@ EOF
 # Create dispersion.conf
 sudo tee /etc/swift/dispersion.conf >/dev/null <<EOF
 [dispersion]
-auth_url = https://${ENDPOINT}:5000/v2.0/
+auth_url = http://${ENDPOINT}:5000/v2.0/
 auth_user = cookbook:admin
 auth_key = openstack
 auth_version = 2.0

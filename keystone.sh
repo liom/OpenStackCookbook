@@ -14,7 +14,7 @@ export SERVICE_TENANT_NAME=service
 export SERVICE_PASS=openstack
 export ENDPOINT=${KEYSTONE_ADMIN_ENDPOINT}
 export SERVICE_TOKEN=ADMIN
-export SERVICE_ENDPOINT=https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
+export SERVICE_ENDPOINT=http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
 export MONGO_KEY=MongoFoo
 export OS_CACERT=/vagrant/ca.pem
 export OS_KEY=/vagrant/cakey.pem
@@ -113,7 +113,7 @@ create_endpoints(){
   export INT_ENDPOINT=${INT_IP}
   export ADMIN_ENDPOINT=${ADMIN_IP}
   export SERVICE_TOKEN=ADMIN
-  export SERVICE_ENDPOINT=https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
+  export SERVICE_ENDPOINT=http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
   export PASSWORD=openstack
   export OS_CACERT=/etc/ssl/certs/ca.pem
   export OS_KEY=/etc/ssl/certs/cakey.pem
@@ -143,7 +143,7 @@ create_endpoints(){
   ADMIN="http://$ADMIN_ENDPOINT:8774/v2/\$(tenant_id)s"
   INTERNAL="http://$INT_ENDPOINT:8774/v2/\$(tenant_id)s"
 
-  keystone  endpoint-create --region regionOne --service_id $NOVA_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $NOVA_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 
   # OpenStack Compute EC2 API
   EC2_SERVICE_ID=$(keystone  service-list | awk '/\ ec2\ / {print $2}')
@@ -152,7 +152,7 @@ create_endpoints(){
   ADMIN="http://$ADMIN_ENDPOINT:8773/services/Admin"
   INTERNAL="http://$INT_ENDPOINT:8773/services/Cloud"
 
-  keystone  endpoint-create --region regionOne --service_id $EC2_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $EC2_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 
   # Glance Image Service
   GLANCE_SERVICE_ID=$(keystone  service-list | awk '/\ glance\ / {print $2}')
@@ -160,16 +160,16 @@ create_endpoints(){
   PUBLIC="http://$ENDPOINT:9292/v2"
   ADMIN="http://$ADMIN_ENDPOINT:9292/v2"
   INTERNAL="http://$INT_ENDPOINT:9292/v2"
-  keystone  endpoint-create --region regionOne --service_id $GLANCE_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $GLANCE_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 
   # Keystone OpenStack Identity Service
   KEYSTONE_SERVICE_ID=$(keystone  service-list | awk '/\ keystone\ / {print $2}')
 
-  PUBLIC="https://$ENDPOINT:5000/v2.0"
-  ADMIN="https://$ADMIN_ENDPOINT:35357/v2.0"
-  INTERNAL="https://$INT_ENDPOINT:5000/v2.0"
+  PUBLIC="http://$ENDPOINT:5000/v2.0"
+  ADMIN="http://$ADMIN_ENDPOINT:35357/v2.0"
+  INTERNAL="http://$INT_ENDPOINT:5000/v2.0"
 
-  keystone  endpoint-create --region regionOne --service_id $KEYSTONE_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $KEYSTONE_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 
   # Cinder Block Storage Service
   CINDER_SERVICE_ID=$(keystone  service-list | awk '/\ volume\ / {print $2}')
@@ -180,7 +180,7 @@ create_endpoints(){
   ADMIN=$PUBLIC
   INTERNAL=$PUBLIC
 
-  keystone  endpoint-create --region regionOne --service_id $CINDER_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $CINDER_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 
   # Neutron Network Service
   NEUTRON_SERVICE_ID=$(keystone  service-list | awk '/\ network\ / {print $2}')
@@ -189,7 +189,7 @@ create_endpoints(){
   ADMIN="http://$ADMIN_ENDPOINT:9696"
   INTERNAL="http://$INT_ENDPOINT:9696"
 
-  keystone  endpoint-create --region regionOne --service_id $NEUTRON_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
+  keystone  endpoint-create --region RegionOne --service_id $NEUTRON_SERVICE_ID --publicurl $PUBLIC --adminurl $ADMIN --internalurl $INTERNAL
 }
 
 # If LDAP is up, all the users/groups should be mapped already, leaving us to configure keystone and add in endpoints
@@ -250,7 +250,7 @@ else
   export INT_ENDPOINT=${INT_IP}
   export ADMIN_ENDPOINT=${ADMIN_IP}
   export SERVICE_TOKEN=ADMIN
-  export SERVICE_ENDPOINT=https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
+  export SERVICE_ENDPOINT=http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0
   export PASSWORD=openstack
   export OS_CACERT=/etc/ssl/certs/ca.pem
   export OS_KEY=/etc/ssl/certs/cakey.pem

@@ -73,8 +73,8 @@ backend=sqlalchemy
 connection = mysql://heat:${MYSQL_HEAT_PASS}@${CONTROLLER_HOST}/heat
 
 [keystone_authtoken]
-auth_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
-identity_uri = https://${KEYSTONE_ADMIN_ENDPOINT}:5000
+auth_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:35357/v2.0/
+identity_uri = http://${KEYSTONE_ADMIN_ENDPOINT}:5000
 admin_tenant_name = service
 admin_user = ${HEAT_SERVICE_USER}
 admin_password = ${HEAT_SERVICE_PASS}
@@ -111,7 +111,7 @@ keystone --insecure service-create --name=heat --type=orchestration --descriptio
 ORCHESTRATION_SERVICE_ID=$(keystone service-list | awk '/\ orchestration\ / {print $2}')
 
 keystone --insecure endpoint-create \
-  --region regionOne \
+  --region RegionOne \
   --service-id=${ORCHESTRATION_SERVICE_ID} \
   --publicurl=http://${CONTROLLER_HOST}:8004/v1/$\(tenant_id\)s \
   --internalurl=http://${CONTROLLER_HOST}:8004/v1/$\(tenant_id\)s \
@@ -122,7 +122,7 @@ keystone --insecure service-create --name=heat-cfn --type=cloudformation --descr
 CLOUDFORMATION_SERVICE_ID=$(keystone service-list | awk '/\ cloudformation\ / {print $2}')
 
 keystone --insecure endpoint-create \
-  --region regionOne \
+  --region RegionOne \
   --service-id=${CLOUDFORMATION_SERVICE_ID} \
   --publicurl=http://${CONTROLLER_HOST}:8000/v1/ \
   --internalurl=http://${CONTROLLER_HOST}:8000/v1 \
